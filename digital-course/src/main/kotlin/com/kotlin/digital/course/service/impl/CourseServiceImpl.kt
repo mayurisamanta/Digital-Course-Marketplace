@@ -4,8 +4,10 @@ import com.kotlin.digital.course.dto.ApiResp
 import com.kotlin.digital.course.dto.CourseReq
 import com.kotlin.digital.course.dto.UserSessionBean
 import com.kotlin.digital.course.entity.Course
+import com.kotlin.digital.course.entity.Purchase
 import com.kotlin.digital.course.exception.CourseException
 import com.kotlin.digital.course.repository.CourseRepository
+import com.kotlin.digital.course.repository.PurchaseRepository
 import com.kotlin.digital.course.service.CourseService
 import com.kotlin.digital.course.service.UserService
 import org.hibernate.query.sqm.tree.SqmNode.log
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Service
 @Service
 class CourseServiceImpl(
     private val courseRepository: CourseRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val purchaseRepository: PurchaseRepository
 ) : CourseService {
 
     /**
@@ -111,5 +114,40 @@ class CourseServiceImpl(
             throw CourseException("Error while getting all course")
         }
 
+    }
+
+    /**
+     * Purchase the course
+     */
+    override fun purchaseCourse(courseId: Long, userSessionBean: UserSessionBean): ApiResp<*> {
+        try {
+            val emailId: String =
+                userSessionBean.emailId ?: throw RuntimeException("Session expired, Please login again")
+
+            log.info("Email: $emailId -> Purchasing the course: $courseId")
+
+            val user = userService.getUserInfoByEmail(emailId)
+
+            val course = courseRepository.findById(courseId)
+                .orElseThrow { CourseException("Course not found with courseId: $courseId") }
+
+            var purchase = Purchase(
+                course = course,
+                user = user
+            )
+
+            purchase = purchaseRepository.save(purchase)
+
+            log.info("Email: $emailId -> Course purchased successfully: $course")
+
+            return ApiResp(
+                status = HttpStatus.CREATED.value(),
+                message = "Course purchased successfully",
+                data = purchase
+            )
+        } catch (e: Exception) {
+            log.error("Email: ${userSessionBean.emailId} -> Error while purchasing the course", e)
+            throw CourseException("Error while purchasing the course")
+        }
     }
 }

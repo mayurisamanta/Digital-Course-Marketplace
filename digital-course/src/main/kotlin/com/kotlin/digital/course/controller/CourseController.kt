@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -53,6 +54,16 @@ class CourseController(
         val userSessionBean = authentication.details as UserSessionBean
         log.info("Email: ${userSessionBean.emailId} -> Getting all course")
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getAllCourse(userSessionBean))
+    }
+
+    /**
+     * Purchase the course
+     */
+    @PostMapping("/customer/purchase/{courseId}")
+    fun purchaseCourse(@PathVariable("courseId") courseId: Long, authentication: Authentication): ResponseEntity<ApiResp<*>> {
+        val userSessionBean = authentication.details as UserSessionBean
+        log.info("Email: ${userSessionBean.emailId} -> Purchasing the course: $courseId")
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.purchaseCourse(courseId, userSessionBean))
     }
 
 

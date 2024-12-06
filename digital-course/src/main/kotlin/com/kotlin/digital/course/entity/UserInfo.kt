@@ -1,5 +1,6 @@
 package com.kotlin.digital.course.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.kotlin.digital.course.enum.Role
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -12,6 +13,7 @@ data class UserInfo(
 
     val emailId: String,
 
+    @JsonIgnore
     val password: String,
 
     @Enumerated(EnumType.STRING)
