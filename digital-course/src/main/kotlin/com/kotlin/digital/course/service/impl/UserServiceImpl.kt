@@ -35,6 +35,7 @@ class UserServiceImpl(
                     emailId = userReq.emailId,
                     password = hashedPassword,
                     role = it,
+                    lastLoginDate = null
                 )
             }
             if (user != null) {
@@ -42,28 +43,30 @@ class UserServiceImpl(
             }
 
             ApiResp(
-                status = HttpStatus.OK.value(),
+                status = HttpStatus.CREATED.value(),
                 message = "User registered successfully",
                 data = user
             )
         } catch (e: Exception) {
-            log.error("Error while registering the user: ${e.message}")
+            log.error("Email: ${userReq.emailId} -> Error while registering the user: ${e.message}")
             throw RuntimeException("Error while registering the user: ${e.message}")
         }
     }
 
-    /*@Transactional
+    @Transactional
     override fun login(userReq: UserReq): ApiResp<*> {
         return try {
             userRepository.updateLastLoginAt(userReq.emailId)
             ApiResp(
-                status = HttpStatus.CREATED.value(),
-                message = "Login Successful"
+                status = HttpStatus.OK.value(),
+                message = "Login Successful",
+                data = null
             )
         } catch (e: Exception) {
+            log.error("Email: ${userReq.emailId} -> Error while logging in the user: ${e.message}")
             throw RuntimeException("Error while logging in the user: ${e.message}")
         }
-    }*/
+    }
 
     /**
      * Get user info by email id
@@ -72,8 +75,14 @@ class UserServiceImpl(
      * @return user info
      */
     override fun getUserInfoByEmail(emailId: String): UserInfo {
-        return userRepository.findByEmailId(emailId)
-            .orElseThrow { UserException("User not found with the email id: $emailId") }
+
+        try {
+            return userRepository.findByEmailId(emailId)
+                .orElseThrow { UserException("User not found with the email id: $emailId") }
+        } catch (e: Exception) {
+            log.error("Email: $emailId -> Error while fetching the user info: ${e.message}")
+            throw RuntimeException("Error while fetching the user info: ${e.message}")
+        }
     }
 
 }

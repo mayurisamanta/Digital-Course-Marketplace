@@ -8,7 +8,8 @@ interface UserService {
 
     fun register(userReq: UserReq): ApiResp<*>
 
-    //    fun login(userReq: UserReq): ApiResp<*>
+    fun login(userReq: UserReq): ApiResp<*>
+
     fun getUserInfoByEmail(emailId: String): UserInfo
 
 }

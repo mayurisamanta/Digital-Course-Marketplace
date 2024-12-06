@@ -35,7 +35,7 @@ class LoginController(
 
         return ResponseEntity.status(HttpStatus.OK)
             .header(ApplicationConstants.JWT_HEADER, jwtService.generateToken(userReq))
-            .body(ApiResp(status = HttpStatus.OK.value(), message = "Login Successful", data = null))
+            .body(userService.login(userReq))
     }
 
     /**
