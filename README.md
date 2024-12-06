@@ -109,6 +109,15 @@ docker run --name=digital-course-marketplace -p 8080:8080 -d mayurisamanta/digit
 ### Accessing the Application
 The application will be accessible at http://localhost:8080.   
 
+---
+
+
+## License
+
+This project is licensed under the **MIT License**. You can find the details in the [LICENSE](https://github.com/mayurisamanta/DigitalCourseMarketplace-backend/blob/master/LICENSE) file.
+
+---
+
 
 ### Contact
 
