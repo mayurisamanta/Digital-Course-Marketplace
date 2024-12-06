@@ -1,5 +1,6 @@
 package com.kotlin.digital.course.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -14,6 +15,7 @@ data class Course(
 
     val price: Double,
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     val creator: UserInfo

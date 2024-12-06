@@ -32,6 +32,7 @@ class AppSecurityConfig(
     companion object {
         private val WHITE_LISTED_APIS = arrayOf("/login", "/register", "/h2-console/**")
         private val CREATOR_APIS = arrayOf("/creator/**")
+        private val CUSTOMER_APIS = arrayOf("/customer/**")
     }
 
     /*
@@ -49,6 +50,7 @@ class AppSecurityConfig(
                 requests
                     .requestMatchers(*WHITE_LISTED_APIS).permitAll()
                     .requestMatchers(*CREATOR_APIS).hasAnyRole("CREATOR")
+                    .requestMatchers(*CUSTOMER_APIS).hasAnyRole("CUSTOMER")
                     .anyRequest().authenticated()
             }
             .sessionManagement { sessionConfig ->

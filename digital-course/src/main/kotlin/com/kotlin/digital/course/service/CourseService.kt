@@ -9,4 +9,7 @@ interface CourseService {
     fun createCourse(courseReq: CourseReq, userSessionBean: UserSessionBean): ApiResp<*>
 
     fun getCourse(userSessionBean: UserSessionBean): ApiResp<*>
+
+    fun getAllCourse(userSessionBean: UserSessionBean): ApiResp<*>
+
 }

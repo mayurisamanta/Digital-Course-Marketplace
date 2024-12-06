@@ -37,5 +37,12 @@ class CourseController(
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourse(userSessionBean))
     }
 
+    @GetMapping("/customer/course")
+    fun getAllCourse(authentication: Authentication): ResponseEntity<ApiResp<*>> {
+        val userSessionBean = authentication.details as UserSessionBean
+        log.info("Email: ${userSessionBean.emailId} -> Getting all course")
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.getAllCourse(userSessionBean))
+    }
+
 
 }
