@@ -135,6 +135,16 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
@@ -142,13 +152,16 @@
                     <compilerPlugins>
                         <plugin>spring</plugin>
                         <plugin>jpa</plugin>
+                        <plugin>all-open</plugin>
                     </compilerPlugins>
                     <pluginOptions>
+                        <option>all-open:annotation=javax.persistence.Entity</option>
                         <option>all-open:annotation=jakarta.persistence.Entity</option>
                         <option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
                         <option>all-open:annotation=jakarta.persistence.Embeddable</option>
                     </pluginOptions>
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
@@ -177,5 +190,7 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <finalName>digital-course</finalName>
     </build>
 </project>
