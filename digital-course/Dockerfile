@@ -1,4 +1,6 @@
-FROM ubuntu:latest
-LABEL authors="ADMIN"
+FROM openjdk:21-jdk
 
-ENTRYPOINT ["top", "-b"]
+ARG JAR_FILE
+ADD ${JAR_FILE} app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
