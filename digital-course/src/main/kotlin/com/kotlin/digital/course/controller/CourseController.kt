@@ -23,6 +23,11 @@ class CourseController(
     private val courseService: CourseService
 ) {
 
+    /**
+     * Create a new course
+     *
+     * @param courseReq
+     */
     @PostMapping("/creator/course")
     fun createCourse(@RequestBody courseReq: CourseReq, authentication: Authentication): ResponseEntity<ApiResp<*>> {
         val userSessionBean = authentication.details as UserSessionBean
@@ -30,6 +35,9 @@ class CourseController(
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(courseReq, userSessionBean))
     }
 
+    /**
+     * Get the course
+     */
     @GetMapping("/creator/course")
     fun getCourse(authentication: Authentication): ResponseEntity<ApiResp<*>> {
         val userSessionBean = authentication.details as UserSessionBean
@@ -37,6 +45,9 @@ class CourseController(
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourse(userSessionBean))
     }
 
+    /**
+     * Get all the courses
+     */
     @GetMapping("/customer/course")
     fun getAllCourse(authentication: Authentication): ResponseEntity<ApiResp<*>> {
         val userSessionBean = authentication.details as UserSessionBean

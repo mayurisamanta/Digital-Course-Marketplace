@@ -21,6 +21,11 @@ class CourseServiceImpl(
     private val userService: UserService
 ) : CourseService {
 
+    /**
+     * Create a new course
+     *
+     * @param courseReq
+     */
     override fun createCourse(courseReq: CourseReq, userSessionBean: UserSessionBean): ApiResp<*> {
 
         try {
@@ -53,6 +58,9 @@ class CourseServiceImpl(
         }
     }
 
+    /**
+     * Get the course by creator
+     */
     override fun getCourse(userSessionBean: UserSessionBean): ApiResp<*> {
 
         try {
@@ -78,6 +86,9 @@ class CourseServiceImpl(
         }
     }
 
+    /**
+     * Get all the courses
+     */
     override fun getAllCourse(userSessionBean: UserSessionBean): ApiResp<*> {
 
         try {
