@@ -48,10 +48,4 @@ class LoginController(
         log.info("Email: ${userReq.emailId} -> Registering the user")
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userReq))
     }
-
-    //api to test the jwt token
-    @PostMapping("/test")
-    fun test(): ResponseEntity<ApiResp<*>> {
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResp(status = HttpStatus.OK.value(), message = "Test Successful", data = null))
-    }
 }
