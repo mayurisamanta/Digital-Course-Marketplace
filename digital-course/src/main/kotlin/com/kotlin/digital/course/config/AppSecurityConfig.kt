@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.password.CompromisedPasswordChecker
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -23,12 +24,14 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
  * Configuration class to configure the security
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class AppSecurityConfig(
     private val userDetailsService: UserDetailsService
 ) {
 
     companion object {
         private val WHITE_LISTED_APIS = arrayOf("/login", "/register", "/h2-console/**")
+        private val CREATOR_APIS = arrayOf("/creator/**")
     }
 
     /*
@@ -45,6 +48,7 @@ class AppSecurityConfig(
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(*WHITE_LISTED_APIS).permitAll()
+                    .requestMatchers(*CREATOR_APIS).hasAnyRole("CREATOR")
                     .anyRequest().authenticated()
             }
             .sessionManagement { sessionConfig ->

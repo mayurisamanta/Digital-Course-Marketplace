@@ -46,4 +46,23 @@ class CourseServiceImpl (
         )
 
     }
+
+    override fun getCourse(userSessionBean: UserSessionBean): ApiResp<*> {
+
+        val emailId: String = userSessionBean.emailId ?: throw RuntimeException("Session expired, Please login again")
+
+        log.info("Email: $emailId -> Getting the course")
+
+        val user = userService.getUserInfoByEmail(emailId)
+
+        val courseList = courseRepository.findByCreator(user)
+
+        log.info("Email: $emailId -> Course list: $courseList")
+
+        return ApiResp(
+            status = HttpStatus.OK.value(),
+            message = "Course list",
+            data = courseList
+        )
+    }
 }

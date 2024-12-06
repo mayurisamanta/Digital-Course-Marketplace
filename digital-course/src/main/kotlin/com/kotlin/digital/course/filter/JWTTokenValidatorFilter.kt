@@ -1,6 +1,5 @@
 package com.kotlin.digital.course.filter
 
-
 import com.kotlin.digital.course.constants.ApplicationConstants
 import com.kotlin.digital.course.dto.UserSessionBean
 import io.jsonwebtoken.Claims
@@ -43,8 +42,12 @@ class JWTTokenValidatorFilter : OncePerRequestFilter() {
                     .build()
                     .parseClaimsJws(jwt)
                     .body
+
                 val username: String = claims["username"].toString()
-                val authorities: String = claims["authorities"].toString()
+
+                val authoritiesList: List<String> = claims["authorities"] as List<String>
+                val authorities = AuthorityUtils.createAuthorityList(*authoritiesList.toTypedArray())
+
                 val userSessionBeanMap: Map<String, Any> = claims["userSessionBean"] as Map<String, Any>
                 val userSessionBean = UserSessionBean(
                     userId = userSessionBeanMap["userId"] as? Long,
@@ -52,17 +55,17 @@ class JWTTokenValidatorFilter : OncePerRequestFilter() {
                 )
 
                 val authentication = UsernamePasswordAuthenticationToken(
-                    username, null,
-                    AuthorityUtils.commaSeparatedStringToAuthorityList(authorities)
+                    username, null, authorities
                 )
-
                 authentication.details = userSessionBean
+
                 SecurityContextHolder.getContext().authentication = authentication
 
             } catch (exception: Exception) {
                 throw BadCredentialsException("Invalid Token received!")
             }
         }
+
         filterChain.doFilter(request, response)
     }
 

@@ -27,7 +27,9 @@ class AppUserDetailsService(
     override fun loadUserByUsername(username: String): UserDetails {
         val userInfo: UserInfo = userRepository.findByEmailId(username)
             .orElseThrow { UsernameNotFoundException("User details not found for the user: $username") }
+
         val authorities: List<GrantedAuthority> = listOf(SimpleGrantedAuthority("ROLE_${userInfo.role}"))
+
         return User(userInfo.emailId, userInfo.password, authorities)
     }
 }

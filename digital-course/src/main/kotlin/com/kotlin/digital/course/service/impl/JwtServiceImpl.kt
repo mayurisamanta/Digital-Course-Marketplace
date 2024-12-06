@@ -64,13 +64,10 @@ class JwtServiceImpl(
                     .setIssuer("Notion")
                     .setSubject("JWT Token")
                     .claim("username", authenticationResponse.name)
-                    .claim(
-                        "authorities",
-                        authenticationResponse.authorities.joinToString(",") { it.authority }
-                    )
+                    .claim("authorities", authenticationResponse.authorities.map { it.authority })
                     .claim("userSessionBean", userSessionBean)
                     .setIssuedAt(Date())
-                    .setExpiration(Date(System.currentTimeMillis() + ApplicationConstants.TIME_OUT)) // 24 hours
+                    .setExpiration(Date(System.currentTimeMillis() + ApplicationConstants.TIME_OUT))
                     .signWith(secretKey)
                     .compact()
 
