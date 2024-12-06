@@ -6,6 +6,8 @@ import com.kotlin.digital.course.dto.UserReq
 import com.kotlin.digital.course.service.JwtService
 import com.kotlin.digital.course.service.UserService
 import jakarta.validation.Valid
+import lombok.extern.slf4j.Slf4j
+import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
  * LoginController
  */
 @RestController
+@Slf4j
 class LoginController(
     private val jwtService: JwtService,
     private val userService: UserService
@@ -28,7 +31,7 @@ class LoginController(
      */
     @PostMapping("/login")
     fun login(@RequestBody userReq: UserReq): ResponseEntity<ApiResp<*>> {
-        println("Email: $userReq.emailId -> Got request to login: $userReq")
+        log.info("Email: $userReq.emailId -> Logging in the user")
 
         return ResponseEntity.status(HttpStatus.OK)
             .header(ApplicationConstants.JWT_HEADER, jwtService.generateToken(userReq))
@@ -42,7 +45,7 @@ class LoginController(
      */
     @PostMapping("/register")
     fun register(@Valid @RequestBody userReq: UserReq): ResponseEntity<ApiResp<*>> {
-        println("Email: ${userReq.emailId} -> Registering the user")
+        log.info("Email: ${userReq.emailId} -> Registering the user")
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userReq))
     }
 

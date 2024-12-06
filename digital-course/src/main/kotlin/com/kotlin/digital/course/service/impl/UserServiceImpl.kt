@@ -6,12 +6,15 @@ import com.kotlin.digital.course.entity.UserInfo
 import com.kotlin.digital.course.exception.UserException
 import com.kotlin.digital.course.repository.UserRepository
 import com.kotlin.digital.course.service.UserService
+import lombok.extern.slf4j.Slf4j
+import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Slf4j
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
@@ -20,6 +23,7 @@ class UserServiceImpl(
     @Transactional
     override fun register(userReq: UserReq): ApiResp<*> {
         val emailId = userReq.emailId
+
         userRepository.findByEmailId(emailId).ifPresent {
             throw RuntimeException("User already exists with the email id: $emailId")
         }
@@ -43,6 +47,7 @@ class UserServiceImpl(
                 data = user
             )
         } catch (e: Exception) {
+            log.error("Error while registering the user: ${e.message}")
             throw RuntimeException("Error while registering the user: ${e.message}")
         }
     }

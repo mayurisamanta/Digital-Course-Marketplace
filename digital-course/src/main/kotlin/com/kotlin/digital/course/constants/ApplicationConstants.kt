@@ -20,4 +20,6 @@ object ApplicationConstants {
     // Password must not contain any whitespace.
     // Password must be at least 8 characters long.
     const val PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
+
+    const val TIME_OUT = 86400000L
 }

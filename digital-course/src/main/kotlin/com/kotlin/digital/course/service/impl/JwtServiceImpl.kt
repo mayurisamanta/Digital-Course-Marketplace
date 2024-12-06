@@ -8,6 +8,8 @@ import com.kotlin.digital.course.service.JwtService
 import com.kotlin.digital.course.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import lombok.extern.slf4j.Slf4j
+import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.core.env.Environment
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -18,6 +20,7 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Service
+@Slf4j
 class JwtServiceImpl(
     private val authenticationManager: AuthenticationManager,
     private val env: Environment,
@@ -27,13 +30,13 @@ class JwtServiceImpl(
     override fun generateToken(userReq: UserReq): String {
         val emailId = userReq.emailId
         val userInfo: UserInfo = userService.getUserInfoByEmail(emailId)
-        println("Email: $emailId -> User Info: $userInfo")
+        log.info("Email: $emailId -> User Info: $userInfo")
 
         return try {
             var jwt = ""
             val authentication = UsernamePasswordAuthenticationToken.unauthenticated(userReq.emailId, userReq.password)
             val authenticationResponse: Authentication = authenticationManager.authenticate(authentication)
-            println("Email: $emailId -> Authentication response: ${authenticationResponse.isAuthenticated}")
+            log.info("Email: $emailId -> Authentication response: ${authenticationResponse.isAuthenticated}")
 
             if (authenticationResponse.isAuthenticated) {
                 val secret = env.getProperty(
@@ -47,7 +50,7 @@ class JwtServiceImpl(
                     emailId = userInfo.emailId
                 )
 
-                println("Email: $emailId -> UserSessionBean: $userSessionBean")
+                log.info("Email: $emailId -> UserSessionBean: $userSessionBean")
 
                 jwt = Jwts.builder()
                     .setIssuer("Notion")
@@ -59,15 +62,15 @@ class JwtServiceImpl(
                     )
                     .claim("userSessionBean", userSessionBean)
                     .setIssuedAt(Date())
-                    .setExpiration(Date(System.currentTimeMillis() + 86400000)) // 24 hours
+                    .setExpiration(Date(System.currentTimeMillis() + ApplicationConstants.TIME_OUT)) // 24 hours
                     .signWith(secretKey)
                     .compact()
 
-                println("Email: $emailId -> JWT Token generated successfully")
+                log.info("Email: $emailId -> JWT Token generated successfully")
             }
             jwt
         } catch (e: Exception) {
-            println("Email: $emailId -> Error while generating the token: ${e.message}")
+            log.error("Email: $emailId -> Error while generating the token: ${e.message}")
             throw RuntimeException("Error while generating the token for email $emailId: ${e.message}")
         }
     }
