@@ -1,6 +1,7 @@
 package com.kotlin.digital.course.repository
 
 import com.kotlin.digital.course.entity.UserInfo
+import com.kotlin.digital.course.enum.Role
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -14,4 +15,6 @@ interface UserRepository : JpaRepository<UserInfo, Long> {
     @Transactional
     @Query("update UserInfo u set u.lastLoginDate = current_timestamp where u.emailId = :emailId")
     fun updateLastLoginAt(emailId: String)
+
+    fun findByRoleIn(roles: List<Role>): List<UserInfo>
 }

@@ -2,7 +2,9 @@ package com.kotlin.digital.course.service.impl
 
 import com.kotlin.digital.course.dto.ApiResp
 import com.kotlin.digital.course.dto.UserReq
+import com.kotlin.digital.course.dto.UserSessionBean
 import com.kotlin.digital.course.entity.UserInfo
+import com.kotlin.digital.course.enum.Role
 import com.kotlin.digital.course.exception.UserException
 import com.kotlin.digital.course.repository.UserRepository
 import com.kotlin.digital.course.service.UserService
@@ -90,6 +92,22 @@ class UserServiceImpl(
         } catch (e: Exception) {
             log.error("Email: $emailId -> Error while fetching the user info: ${e.message}")
             throw RuntimeException("Error while fetching the user info: ${e.message}")
+        }
+    }
+
+    override fun getAllUsers(userSessionBean: UserSessionBean): ApiResp<*> {
+        return try {
+            log.info("Email: ${userSessionBean.emailId} -> Getting all users")
+            val roles = listOf(Role.CREATOR, Role.CUSTOMER)
+            val users = userRepository.findByRoleIn(roles)
+            ApiResp(
+                status = HttpStatus.OK.value(),
+                message = "Users fetched successfully",
+                data = users
+            )
+        } catch (e: Exception) {
+            log.error("Email: ${userSessionBean.emailId} -> Error while fetching the users: ${e.message}")
+            throw RuntimeException("Error while fetching the users: ${e.message}")
         }
     }
 
