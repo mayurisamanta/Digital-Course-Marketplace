@@ -4,6 +4,9 @@ import com.kotlin.digital.course.dto.ApiResp
 import com.kotlin.digital.course.dto.UserReq
 import com.kotlin.digital.course.entity.UserInfo
 
+/**
+ * interface for UserService
+ */
 interface UserService {
 
     fun register(userReq: UserReq): ApiResp<*>

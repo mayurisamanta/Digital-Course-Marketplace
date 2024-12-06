@@ -28,6 +28,20 @@ class GlobalExceptionHandler {
     }
 
     /**
+     * Handle CourseException
+     *
+     * @param courseException
+     */
+    @ExceptionHandler(CourseException::class)
+    fun handleCourseException(courseException: CourseException): ApiResp<String> {
+        return ApiResp(
+            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            error = "Course Related Error",
+            message = courseException.message
+        )
+    }
+
+    /**
      * Handle MethodArgumentNotValidException
      *
      * @param methodArgumentNotValidException

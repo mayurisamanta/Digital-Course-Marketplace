@@ -19,6 +19,9 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.crypto.SecretKey
 
+/**
+ * JwtServiceImpl
+ */
 @Service
 @Slf4j
 class JwtServiceImpl(
@@ -27,6 +30,11 @@ class JwtServiceImpl(
     private val userService: UserService
 ) : JwtService {
 
+    /**
+     * Generate JWT token
+     *
+     * @param userReq
+     */
     override fun generateToken(userReq: UserReq): String {
         val emailId = userReq.emailId
         val userInfo: UserInfo = userService.getUserInfoByEmail(emailId)

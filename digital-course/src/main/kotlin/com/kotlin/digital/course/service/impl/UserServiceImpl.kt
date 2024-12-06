@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * UserServiceImpl
+ */
 @Service
 @Slf4j
 class UserServiceImpl(
@@ -20,6 +23,11 @@ class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder
 ) : UserService {
 
+    /**
+     * Register a new user
+     *
+     * @param userReq
+     */
     @Transactional
     override fun register(userReq: UserReq): ApiResp<*> {
         val emailId = userReq.emailId
@@ -30,7 +38,7 @@ class UserServiceImpl(
 
         return try {
             val hashedPassword = passwordEncoder.encode(userReq.password)
-            val user = userReq.role?.let {
+            var user = userReq.role?.let {
                 UserInfo(
                     emailId = userReq.emailId,
                     password = hashedPassword,
@@ -39,7 +47,7 @@ class UserServiceImpl(
                 )
             }
             if (user != null) {
-                userRepository.save(user)
+                user = userRepository.save(user)
             }
 
             ApiResp(

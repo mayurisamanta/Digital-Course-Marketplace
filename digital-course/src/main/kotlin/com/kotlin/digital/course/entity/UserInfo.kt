@@ -18,7 +18,5 @@ data class UserInfo(
     val role: Role,
 
     var lastLoginDate: LocalDateTime?
-
-
 )
 
