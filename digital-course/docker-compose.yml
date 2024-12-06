@@ -3,5 +3,6 @@ version: '3'
 services:
   course-app:
     image: mayurisamanta/digital-course-marketplace
+    container_name: digital-course-marketplace
     ports:
       - 8080:8080
