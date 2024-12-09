@@ -92,15 +92,15 @@ class CourseServiceImpl(
     /**
      * Get all the courses
      */
-    override fun getAllCourse(userSessionBean: UserSessionBean): ApiResp<*> {
+    override fun getAllCourse(userSessionBean: UserSessionBean, search: String): ApiResp<*> {
 
         try {
             val emailId: String =
                 userSessionBean.emailId ?: throw RuntimeException("Session expired, Please login again")
 
-            log.info("Email: $emailId -> Getting all course")
+            log.info("Email: $emailId -> Getting all By search: $search")
 
-            val courseList = courseRepository.findAll()
+            val courseList = courseRepository.findAllWithSearch(search)
 
             log.info("Email: $emailId -> All course list: $courseList")
 
