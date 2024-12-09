@@ -66,5 +66,12 @@ class CourseController(
         return ResponseEntity.status(HttpStatus.OK).body(courseService.purchaseCourse(courseId, userSessionBean))
     }
 
+    @GetMapping("/customer/purchase")
+    fun getPurchaseCourse(authentication: Authentication): ResponseEntity<ApiResp<*>> {
+        val userSessionBean = authentication.details as UserSessionBean
+        log.info("Email: ${userSessionBean.emailId} -> Getting the purchased course")
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.getPurchaseCourse(userSessionBean))
+    }
+
 
 }

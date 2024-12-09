@@ -150,4 +150,28 @@ class CourseServiceImpl(
             throw CourseException("Error while purchasing the course")
         }
     }
+
+    override fun getPurchaseCourse(userSessionBean: UserSessionBean): ApiResp<*> {
+        try {
+            val emailId: String =
+                userSessionBean.emailId ?: throw RuntimeException("Session expired, Please login again")
+
+            log.info("Email: $emailId -> Getting the purchased course")
+
+            val user = userService.getUserInfoByEmail(emailId)
+
+            val courseList = purchaseRepository.findCoursesByUser(user)
+
+            log.info("Email: $emailId -> Purchased course list: $courseList")
+
+            return ApiResp(
+                status = HttpStatus.OK.value(),
+                message = "Purchased course list",
+                data = courseList
+            )
+        } catch (e: Exception) {
+            log.error("Email: ${userSessionBean.emailId} -> Error while getting the purchased course", e)
+            throw CourseException("Error while getting the purchased course")
+        }
+    }
 }

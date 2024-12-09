@@ -14,4 +14,6 @@ interface CourseService {
 
     fun purchaseCourse(courseId: Long, userSessionBean: UserSessionBean): ApiResp<*>
 
+    fun getPurchaseCourse(userSessionBean: UserSessionBean): ApiResp<*>
+
 }
