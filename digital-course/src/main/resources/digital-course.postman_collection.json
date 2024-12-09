@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"emailId\" : \"customer_mayurisamanta@gmail.com\",\n    \"password\" : \"Mayuri@1234\",\n    \"role\" : \"CUSTOMER\"\n}",
+					"raw": "{\n    \"emailId\" : \"creator_mayurisamanta@gmail.com\",\n    \"password\" : \"Mayuri@1234\",\n    \"role\" : \"CREATOR\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,40 +67,13 @@
 			"response": []
 		},
 		{
-			"name": "test",
+			"name": "Create Course - Creator",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "{{jwt_admin}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/test",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"test"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Course",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJOb3Rpb24iLCJzdWIiOiJKV1QgVG9rZW4iLCJ1c2VybmFtZSI6Im1heXVyaXNhbWFudGFAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0NVU1RPTUVSIiwidXNlclNlc3Npb25CZWFuIjp7InVzZXJJZCI6MSwiZW1haWxJZCI6Im1heXVyaXNhbWFudGFAZ21haWwuY29tIn0sImlhdCI6MTczMzQ3NDM5OCwiZXhwIjoxNzMzNTYwNzk4fQ.N6p3FM50aa1gNpiArLN2XEnDSV1GbfOcXf0k34RtWDo",
+						"value": "{{jwt_creator}}",
 						"type": "text"
 					}
 				],
@@ -114,7 +87,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/course",
+					"raw": "http://localhost:8080/api/v1/creator/course",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -123,6 +96,7 @@
 					"path": [
 						"api",
 						"v1",
+						"creator",
 						"course"
 					]
 				}
@@ -158,7 +132,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Course - Customer",
+			"name": "Get All Course - Customer",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -169,7 +143,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/customer/course",
+					"raw": "http://localhost:8080/api/v1/customer/course?search=",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -180,13 +154,19 @@
 						"v1",
 						"customer",
 						"course"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": ""
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "purchase course",
+			"name": "purchase course - Customer",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -215,13 +195,41 @@
 			"response": []
 		},
 		{
-			"name": "get all users - Admin",
+			"name": "get purchased course - Customer",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
 						"value": "{{jwt_customer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/customer/purchase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"customer",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all users - Admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwt_admin}}",
 						"type": "text"
 					}
 				],
